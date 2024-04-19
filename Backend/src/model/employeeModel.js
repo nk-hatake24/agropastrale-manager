@@ -6,7 +6,7 @@ const employeeSchema = new mongoose.Schema(
     id_user: {
       type: String,
     },
-    name_employe:{
+    name_employee:{
       type: String,
       required: [true, 'name of the employee is required']
   },
@@ -16,14 +16,15 @@ const employeeSchema = new mongoose.Schema(
   },
     email: {
       type: String,
-      required: [true, "name is required"],
+      required: [true, "email is required"],
+      unique: true
     },
     password: {
       type: String,
       required: [true, "password is required"],
     },
     salary: {
-      type: Integer,
+      type: Number,
       required: [true, "the employee's salary is required"],
     },
     address: {
