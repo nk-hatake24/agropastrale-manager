@@ -1,11 +1,18 @@
 const Employee = require("../model/employeeModel");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 // ****************Register an employee*****************************
 const employeeRegister = async (req, res) => {
   try {
     // Validation des données reçues
-    const { name, email, password } = req.body;
+    const {
+      name_employee,
+      email,
+      password,
+      function_employee,
+      salary,
+      address,
+    } = req.body;
     if (!name_employee || !email || !password) {
       return res.status(400).json({ message: "Données manquantes" });
     }
@@ -68,34 +75,40 @@ const updateEmployee = async (req, res) => {
   const updateData = req.body;
 
   try {
-    const updatedEmployee = await Employee.findOneAndUpdate(
-      email,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const updatedEmployee = await Employee.findOneAndUpdate(email, updateData, {
+      new: true,
+      runValidators: true,
+    });
     if (!updatedEmployee) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Employee not found. to modify an employee, he or she most exist",
-        });
+      return res.status(404).json({
+        message:
+          "Employee not found. to modify an employee, he or she most exist",
+      });
     }
-    res.status(200).json({message:'the employee informations had been updated', data:updatedEmployee});
+    res
+      .status(200)
+      .json({
+        message: "the employee informations had been updated",
+        data: updatedEmployee,
+      });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-
 // *********************delete an employee****************************
 const deleteEmployee = async (req, res) => {
-  const { email } = req.params; 
+  const { email } = req.params;
 
   try {
     const deletedEmployee = await Employee.findOneAndDelete(email);
     if (!deletedEmployee) {
-      return res.status(404).json({ message: "Employee not found! can not delete an employee that does not exist" });
+      return res
+        .status(404)
+        .json({
+          message:
+            "Employee not found! can not delete an employee that does not exist",
+        });
     }
     res.status(200).json({ message: "Employee deleted successfully" });
   } catch (error) {
@@ -105,38 +118,40 @@ const deleteEmployee = async (req, res) => {
 
 // ***************************login an employee**************************
 const login = async (req, res) => {
-    const { email, password } = req.body; 
-  
-    try {
-      // Check if the employee exists
-      const employee = await Employee.findOne({ email });
-      if (!employee) {
-        return res.status(404).json({ message: "Employee not found" });
-      }
-  
-      // Compare the hashed passwords
-      const isMatch = await bcrypt.compare(password, employee.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-  
-      // Generate a token (if using JWT)
-      const token = jwt.sign({ id: employee._id }, 'yourSecretKey', { expiresIn: '1h' });
-  
-      res.status(200).json({
-        message: "Logged in successfully",
-        token,
-        employee: {
-          id: employee._id,
-          name: employee.name_employee,
-          function: employee.function_employee,
-          email: employee.email
-        }
-      });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  const { email, password } = req.body;
+
+  try {
+    // Check if the employee exists
+    const employee = await Employee.findOne({ email });
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found" });
     }
+
+    // Compare the hashed passwords
+    const isMatch = await bcrypt.compare(password, employee.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate a token (if using JWT)
+    const token = jwt.sign({ id: employee._id }, "yourSecretKey", {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({
+      message: "Logged in successfully",
+      token,
+      employee: {
+        id: employee._id,
+        name: employee.name_employee,
+        function: employee.function_employee,
+        email: employee.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
+};
 
 module.exports = {
   employeeRegister,
@@ -144,5 +159,5 @@ module.exports = {
   searchOneEmployee,
   updateEmployee,
   deleteEmployee,
-  login
+  login,
 };

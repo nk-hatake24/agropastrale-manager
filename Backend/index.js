@@ -23,9 +23,9 @@ dbConnection()
 
 // *****************routes******************
 
-app.use("/api", employeeRoute);
-app.use("/ap", (req,res)=>{
-    res.json('the elder')
+app.use("/api/employee", employeeRoute);
+app.use("*", (req,res)=>{
+    res.status(404).json({message:'this routes is not found'})
 })
 
 
