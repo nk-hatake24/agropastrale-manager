@@ -24,7 +24,6 @@ const supplierSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Methods...
 
 const SupplierModel = mongoose.model("Supplier", supplierSchema);
 

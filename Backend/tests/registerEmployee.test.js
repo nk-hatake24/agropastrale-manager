@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../src/route/employeeRoutes');  
+const app = require('../index.js');  
 
 describe('Registration of Employee', () => {
   it('should register a new employee successfully', async () => {
@@ -12,7 +12,7 @@ describe('Registration of Employee', () => {
       address: "123 Main St"
     };
 
-    const response = await request(app).post('/registerEmployee').send(employeeData);
+    const response = await request(app).post('api/employee/registerEmployee').send(employeeData);
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('data.name_employee', 'John Doe');
   });

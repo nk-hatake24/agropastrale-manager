@@ -12,7 +12,8 @@ const employeeSchema = new mongoose.Schema(
   },
   function_employee:{
       type: String,
-      required: [true, 'the function of the employee is required']
+      required: [true, 'the function of the employee is required'],
+      enum:['employee', 'manager', 'admin']
   },
     email: {
       type: String,
