@@ -11,7 +11,7 @@ const employeeRoute = require('./src/route/employeeRoutes')
 const budgetRoute = require('./src/route/budgetRoute')
 const stockRoute =require('./src/route/stockRoute')
 const supplierRoute =require('./src/route/supplierRoute')
-
+const transactionRoute = require('./src/route/transactionRoute')
 
 
 const app = express()
@@ -30,6 +30,7 @@ dbConnection()
 
 // *****************routes******************
 
+app.use("/api/transaction", transactionRoute)
 app.use("/api/supplier", supplierRoute)
 app.use("/api/stock", stockRoute)
 app.use("/api/budget", budgetRoute)
